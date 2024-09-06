@@ -1,11 +1,11 @@
 [package]
 name = "oxide-parser-wasm"
-version = "0.1.0"
+version = "1.0.4"
 edition = "2021"
 authors = ["WindPress <hi@wind.press>"]
 description = "tailwindcss-oxide parser wasm"
 license = "MIT"
-repository = "https://github.com/orgrosua/oxide-parser-wasm"
+repository = "https://github.com/wind-press/oxide-parser-wasm"
 
 [lib]
 crate-type = ["cdylib"]
