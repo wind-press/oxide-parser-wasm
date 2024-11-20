@@ -49,8 +49,10 @@ jobs:
           elif [ "${{ matrix.os }}" = "macos-latest" ]; then
             cp target/x86_64-apple-darwin/release/liboxide_parser_wasm.dylib artifact/php/ext/
           elif [ "${{ matrix.os }}" = "windows-latest" ]; then
-            cp target/x86_64-pc-windows-gnu/release/oxide_parser_wasm.dll artifact/php/ext/
+            mkdir -p artifact\php\ext\
+            copy target\x86_64-pc-windows-gnu\release\oxide_parser_wasm.dll artifact\php\ext\
           fi
+        shell: bash
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
