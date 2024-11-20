@@ -44,17 +44,19 @@ jobs:
       - name: Upload artifact
         run: |
           mkdir -p artifact/php/ext/
-          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
             cp target/x86_64-unknown-linux-gnu/release/liboxide_parser_wasm.so artifact/php/ext/
-          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+          elif [ "${{ matrix.os }}" = "macos-latest" ]; then
             cp target/x86_64-apple-darwin/release/liboxide_parser_wasm.dylib artifact/php/ext/
-          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+          elif [ "${{ matrix.os }}" = "windows-latest" ]; then
             cp target/x86_64-pc-windows-gnu/release/oxide_parser_wasm.dll artifact/php/ext/
           fi
-        - uses: actions/upload-artifact@v3
-          with:
-            name: build-${{ matrix.os }}
-            path: artifact/
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.os }}
+          path: artifact/
 
   publish:
     runs-on: ubuntu-latest
