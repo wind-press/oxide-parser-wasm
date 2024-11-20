@@ -41,7 +41,8 @@ jobs:
           rustup target add x86_64-pc-windows-gnu
           cargo build --release --target x86_64-pc-windows-gnu
 
-      - name: Upload artifact
+      - name: Upload artifact (Linux and macOS)
+        if: ${{ matrix.os != 'windows-latest' }}
         shell: bash
         run: |
           mkdir -p artifact/php/ext/
@@ -49,10 +50,15 @@ jobs:
             cp target/x86_64-unknown-linux-gnu/release/liboxide_parser_wasm.so artifact/php/ext/
           elif [ "${{ matrix.os }}" = "macos-latest" ]; then
             cp target/x86_64-apple-darwin/release/liboxide_parser_wasm.dylib artifact/php/ext/
-          elif [ "${{ matrix.os }}" = "windows-latest" ]; then
-            mkdir -p artifact\\php\\ext\\
-            copy target\\x86_64-pc-windows-gnu\\release\\oxide_parser_wasm.dll artifact\\php\\ext\\
           fi
+
+      - name: Upload artifact (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        shell: cmd
+        run: |
+          mkdir artifact\php\ext
+          copy target\x86_64-pc-windows-gnu\release\oxide_parser_wasm.dll artifact\php\ext\
+
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
