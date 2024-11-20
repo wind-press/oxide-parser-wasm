@@ -41,7 +41,7 @@ jobs:
           env:
             NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
-        - name: Publish package to pkg.pr.new
-          run: npx pkg-pr-new publish
-          working-directory: pkg
+        # - name: Publish package to pkg.pr.new
+        #   run: npx pkg-pr-new publish
+        #   working-directory: pkg
 
