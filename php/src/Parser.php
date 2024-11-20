@@ -25,8 +25,17 @@ class Parser
      */
     private function __construct() {
         $os = PHP_OS_FAMILY;
-        $ext = $os === 'Windows' ? 'dll' : ($os === 'Darwin' ? 'dylib' : 'so');
-        $lib_path = dirname(__DIR__) . '/ext/liboxide_parser_wasm' . $ext;
+        $lib_path = dirname(__DIR__) . '/ext';
+        switch ($os) {
+            case 'Windows':
+                $lib_path .= '/build-windows-latest/oxide_parser_wasm.dll';
+                break;
+            case 'Darwin':
+                $lib_path .= '/build-macos-latest/liboxide_parser_wasm.dylib';
+                break;
+            default:
+                $lib_path .= '/build-linux-latest/liboxide_parser_wasm.so';
+        }
 
         $this->ffi = FFI::cdef("
             char** find_tw_candidates_ffi(const char* input, size_t input_len, int loose);
