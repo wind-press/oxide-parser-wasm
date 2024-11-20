@@ -1,7 +1,4 @@
-# builds the content of http://github.com/wind-press/windpress
-# inspiration from https://github.com/rectorphp/rector-src/blob/main/.github/workflows/build_scoped_rector.yaml
-# TODO: trigger the FREE build only when the PRO build is successful. reference: https://github.blog/changelog/2022-09-08-github-actions-use-github_token-with-workflow_dispatch-and-repository_dispatch/
-name: Publish to packagist
+name: Publish to Packagist
 
 on:
   push:
@@ -10,98 +7,88 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
-        # sometime, when 2 or more consecutive PRs merged, the checkout wind-press/windpress is overlapped
-        # and reverting other commit change
-        # this should not happen on create a tag, so wait first
-        - name: "Wait before checkout on create a tag"
-          if: "startsWith(github.ref, 'refs/tags/')"
-          run: sleep 20
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
-        - uses: actions/checkout@v4
+      - name: Set up Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
 
-        # Set up Rust toolchain
-        - name: Set up Rust
-          uses: dtolnay/rust-toolchain@stable
+      - name: Build for Linux
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          rustup target add x86_64-unknown-linux-gnu
+          cargo build --release --target x86_64-unknown-linux-gnu
+
+      - name: Build for macOS
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: |
+          rustup target add x86_64-apple-darwin
+          cargo build --release --target x86_64-apple-darwin
+
+      - name: Build for Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          rustup target add x86_64-pc-windows-gnu
+          cargo build --release --target x86_64-pc-windows-gnu
+
+      - name: Upload artifact
+        run: |
+          mkdir -p artifact/php/ext/
+          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            cp target/x86_64-unknown-linux-gnu/release/liboxide_parser_wasm.so artifact/php/ext/
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            cp target/x86_64-apple-darwin/release/liboxide_parser_wasm.dylib artifact/php/ext/
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+            cp target/x86_64-pc-windows-gnu/release/oxide_parser_wasm.dll artifact/php/ext/
+          fi
+        - uses: actions/upload-artifact@v3
           with:
-            targets: |
-              x86_64-unknown-linux-gnu
-              x86_64-apple-darwin
-              x86_64-pc-windows-gnu
+            name: build-${{ matrix.os }}
+            path: artifact/
 
-        # Install dependencies for cross-compilation
-        - name: Install dependencies
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y musl-tools mingw-w64
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: collected-artifacts
 
-        # Build for Linux (.so)
-        - name: Build for Linux
-          run: |
-            cargo build --release --target x86_64-unknown-linux-gnu
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          repository: wind-press/oxide-parser-php
+          ref: main
+          path: remote-repository
+          token: ${{ secrets.ORG_DEV_PAT }}
 
-        # Build for macOS (.dylib)
-        - name: Build for macOS
-          run: |
-            cargo build --release --target x86_64-apple-darwin
+      - name: Copy artifacts to target repository
+        run: |
+          cp -a collected-artifacts/php/. remote-repository/php/ext/
 
-        # Build for Windows (.dll)
-        - name: Build for Windows
-          run: |
-            cargo build --release --target x86_64-pc-windows-gnu
+      - name: Setup Git
+        run: |
+          git config --global user.name "Joshua Gugun Siagian"
+          git config --global user.email "suabahasa@gmail.com"
 
-        # Prepare output directory
-        - name: Prepare output
-          run: |
-            mkdir -p php/ext/
-            cp target/x86_64-unknown-linux-gnu/release/liboxide_parser_wasm.so php/ext/
-            cp target/x86_64-apple-darwin/release/liboxide_parser_wasm.dylib php/ext/
-            cp target/x86_64-pc-windows-gnu/release/oxide_parser_wasm.dll php/ext/
-
-        # clone remote repository, so we can push it
-        - uses: actions/checkout@v4
-          with:
-            repository: wind-press/oxide-parser-php
-            ref: main
-            path: remote-repository
-            token: ${{ secrets.ORG_DEV_PAT }}
-
-        # remove remote files, to avoid piling up dead code in remote repository
-        - working-directory: remote-repository
-          run: |
-            git rm -rf .
-            git clean -fxd
-
-        # copy files to remote repository
-        - run: cp -a php/. remote-repository
-
-        # setup git
-        - working-directory: remote-repository
-          run: |
-            git config user.name "Joshua Gugun Siagian"
-            git config user.email suabahasa@gmail.com
-
-        # commit metadata
-        - name: "Get Git log"
-          id: git-log
-          run: |
-              echo "log<<EOF" >> $GITHUB_OUTPUT
-              echo "$(git log ${{ github.event.before }}..${{ github.event.after }} --reverse --pretty='https://github.com/wind-press/oxide-parser-wasm/commit/%H %s')" >> $GITHUB_OUTPUT
-              echo 'EOF' >> $GITHUB_OUTPUT
-
-        # publish it to remote repository with tag
-        - name: "Commit Prefixed - tag"
-          working-directory: remote-repository
-          if: "startsWith(github.ref, 'refs/tags/')"
-          env:
-              INPUT_LOG: ${{ steps.git-log.outputs.log }}
-          run: |
-            git add --all
-            git commit -m "oxide-parser-wasm ${GITHUB_REF#refs/tags/}" -m "$INPUT_LOG"
-            git push --quiet origin main
-            git tag ${GITHUB_REF#refs/tags/} -m "${GITHUB_REF#refs/tags/}"
-            git push --quiet origin ${GITHUB_REF#refs/tags/}
-
+      - name: Commit and tag
+        working-directory: remote-repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add --all
+          git commit -m "oxide-parser-wasm ${GITHUB_REF#refs/tags/}"
+          git push
+          git tag ${GITHUB_REF#refs/tags/} -m "${GITHUB_REF#refs/tags/}"
+          git push origin ${GITHUB_REF#refs/tags/}
