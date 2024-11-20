@@ -42,6 +42,7 @@ jobs:
           cargo build --release --target x86_64-pc-windows-gnu
 
       - name: Upload artifact
+        shell: bash
         run: |
           mkdir -p artifact/php/ext/
           if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
@@ -49,10 +50,9 @@ jobs:
           elif [ "${{ matrix.os }}" = "macos-latest" ]; then
             cp target/x86_64-apple-darwin/release/liboxide_parser_wasm.dylib artifact/php/ext/
           elif [ "${{ matrix.os }}" = "windows-latest" ]; then
-            mkdir -p artifact\php\ext\
-            copy target\x86_64-pc-windows-gnu\release\oxide_parser_wasm.dll artifact\php\ext\
+            mkdir -p artifact\\php\\ext\\
+            copy target\\x86_64-pc-windows-gnu\\release\\oxide_parser_wasm.dll artifact\\php\\ext\\
           fi
-        shell: bash
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
