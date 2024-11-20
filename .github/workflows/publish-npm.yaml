@@ -1,7 +1,5 @@
 # builds the content of http://github.com/wind-press/windpress
-# inspiration from https://github.com/rectorphp/rector-src/blob/main/.github/workflows/build_scoped_rector.yaml
-# TODO: trigger the FREE build only when the PRO build is successful. reference: https://github.blog/changelog/2022-09-08-github-actions-use-github_token-with-workflow_dispatch-and-repository_dispatch/
-name: Publish
+name: Publish to npm
 
 on:
   push:

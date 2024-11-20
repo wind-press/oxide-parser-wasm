@@ -1,0 +1,17 @@
+{
+    "name": "windpress/oxide-parser",
+    "description": "tailwindcss-oxide parser",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "WindPress\\OxideParser\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "WindPress",
+            "email": "hi@wind.press"
+        }
+    ],
+    "require": {}
+}
