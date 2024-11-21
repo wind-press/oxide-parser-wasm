@@ -7,7 +7,7 @@ on:
 
 env:
   # The project name specified in your Cargo.toml
-  PROJECT_NAME: oxide-parser-wasm
+  PROJECT_NAME: "oxide_parser_wasm"
 
 jobs:
   build:
