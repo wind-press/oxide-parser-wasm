@@ -28,13 +28,13 @@ class Parser
         $lib_path = dirname(__DIR__) . '/ext';
         switch ($os) {
             case 'Windows':
-                $lib_path .= '/build-windows-latest/oxide_parser_wasm.dll';
+                $lib_path .= '/win/oxide_parser_wasm.dll';
                 break;
             case 'Darwin':
-                $lib_path .= '/build-macos-latest/liboxide_parser_wasm.dylib';
+                $lib_path .= '/macos/liboxide_parser_wasm.dylib';
                 break;
             default:
-                $lib_path .= '/build-linux-latest/liboxide_parser_wasm.so';
+                $lib_path .= '/linux/liboxide_parser_wasm.so';
         }
 
         $this->ffi = FFI::cdef("
