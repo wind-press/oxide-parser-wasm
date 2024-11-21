@@ -5,47 +5,64 @@ on:
     tags:
       - '*'
 
+env:
+  # The project name specified in your Cargo.toml
+  PROJECT_NAME: oxide-parser-wasm
+
 jobs:
   build:
+    # Set the job to run on the platform specified by the matrix below
+    runs-on: ${{ matrix.runner }}
+
+    # Define the build matrix for cross-compilation
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+        include:
+          - name: linux
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - name: win
+            runner: windows-latest
+            target: x86_64-pc-windows-msvc
+          - name: macos
+            runner: macos-latest
+            target: aarch64-apple-darwin
 
+    # The steps to run for each matrix item
     steps:
-      - name: Checkout source code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Rust toolchain
-        uses: actions-rs/toolchain@v1
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
         with:
-          profile: minimal
-          toolchain: stable
-          override: true
+          targets: "${{ matrix.target }}"
 
-      - name: Build for Linux
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+      - name: Setup Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build Binary
+        run: cargo build --verbose --release --target ${{ matrix.target }}
+
+      - name: Copy built binary to php/ext/
+        shell: bash
         run: |
           mkdir -p php/ext/
-          rustup target add x86_64-unknown-linux-gnu
-          cargo build --release --target x86_64-unknown-linux-gnu
-          cp target/x86_64-unknown-linux-gnu/release/liboxide_parser_wasm.so php/ext/
+          
+          BIN_FILENAME=""
+          if [[ "${{ matrix.runner }}" == "windows-latest" ]]; then
+            BIN_NAME="${PROJECT_NAME}.dll"
+          elif [[ "${{ matrix.runner }}" == "macos-latest" ]]; then
+            BIN_NAME="lib${PROJECT_NAME}.dylib"
+          else
+            BIN_NAME="lib${PROJECT_NAME}.so"
+          fi
 
-      - name: Build for macOS
-        if: ${{ matrix.os == 'macos-latest' }}
-        run: |
-          mkdir -p php/ext/
-          rustup target add x86_64-apple-darwin
-          cargo build --release --target x86_64-apple-darwin
-          cp target/x86_64-apple-darwin/release/liboxide_parser_wasm.dylib php/ext/
+          # The built binary output location
+          BIN_OUTPUT="target/${{ matrix.target }}/release/${BIN_FILENAME}"
 
-      - name: Build for Windows
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: |
-          mkdir php\ext\
-          rustup target add x86_64-pc-windows-gnu
-          cargo build --release --target x86_64-pc-windows-gnu
-          copy target\x86_64-pc-windows-gnu\release\oxide_parser_wasm.dll php\ext\
+          # Copy the built binary to the php/ext/ directory
+          cp "${BIN_OUTPUT}" "php/ext/${BIN_NAME}"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
