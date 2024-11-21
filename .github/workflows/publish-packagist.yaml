@@ -49,7 +49,7 @@ jobs:
         run: |
           mkdir -p php/ext/
           
-          BIN_FILENAME=""
+          BIN_NAME=""
           if [[ "${{ matrix.runner }}" == "windows-latest" ]]; then
             BIN_NAME="${PROJECT_NAME}.dll"
           elif [[ "${{ matrix.runner }}" == "macos-latest" ]]; then
@@ -59,7 +59,7 @@ jobs:
           fi
 
           # The built binary output location
-          BIN_OUTPUT="target/${{ matrix.target }}/release/${BIN_FILENAME}"
+          BIN_OUTPUT="target/${{ matrix.target }}/release/${BIN_NAME}"
 
           # Copy the built binary to the php/ext/ directory
           cp "${BIN_OUTPUT}" "php/ext/${BIN_NAME}"
