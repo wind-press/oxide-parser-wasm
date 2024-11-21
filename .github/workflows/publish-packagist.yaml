@@ -91,6 +91,12 @@ jobs:
           path: remote-repository
           token: ${{ secrets.ORG_DEV_PAT }}
 
+      # remove remote files, to avoid piling up dead code in remote repository
+      - working-directory: remote-repository
+        run: |
+          git rm -rf .
+          git clean -fxd
+
       - name: Copy the php package folder from 'php' to 'remote-repository'
         run: |
           cp -a php/. remote-repository
