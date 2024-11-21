@@ -2,6 +2,7 @@
     "name": "windpress/oxide-parser",
     "description": "tailwindcss-oxide parser",
     "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "WindPress\\OxideParser\\": "src/"

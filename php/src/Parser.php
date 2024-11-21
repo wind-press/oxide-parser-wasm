@@ -96,10 +96,8 @@ class Parser
 
     /**
      * Free candidates.
-     *
-     * @param array $candidates
      */
-    public function free_candidates(array $candidates): void
+    private function free_candidates($candidates): void
     {
         $this->ffi->free_candidates($candidates);
     }
