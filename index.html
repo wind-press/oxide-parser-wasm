@@ -8,7 +8,6 @@
     <script type="module">
       import init, { find_tw_candidates } from "./pkg/oxide_parser_wasm.js";
       init().then(() => {
-        // greet("WebAssembly");
         const candidates = find_tw_candidates(/** html */`
             <!--
             Welcome to Tailwind Play, the official Tailwind CSS playground!
