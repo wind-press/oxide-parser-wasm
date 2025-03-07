@@ -38,7 +38,7 @@ class Parser
         }
 
         $this->ffi = FFI::cdef("
-            char** find_tw_candidates_ffi(const char* input, size_t input_len, int loose);
+            char** find_tw_candidates_ffi(const char* input, size_t input_len);
             void free_candidates(char** ptr);
         ", $lib_path);
     }
@@ -77,12 +77,11 @@ class Parser
      * Find tailwind candidates.
      *
      * @param string $input
-     * @param int $loose 1 (true) or 0 (false)
      * @return array
      */
-    public function find_tw_candidates(string $input, int $loose = 1): array
+    public function find_tw_candidates(string $input): array
     {
-        $candidates = $this->ffi->find_tw_candidates_ffi($input, strlen($input), $loose);
+        $candidates = $this->ffi->find_tw_candidates_ffi($input, strlen($input));
         $result = [];
 
         for ($i = 0; $candidates[$i] !== null; $i++) {

@@ -1,32 +1,34 @@
 use wasm_bindgen::prelude::*;
-use tailwindcss_oxide::parser::*;
+use tailwindcss_oxide::extractor::{Extractor, Extracted};
 
-// Original run function remains unchanged
-fn run(input: &str, loose: bool) -> Vec<&str> {
-    Extractor::unique(
-        input.as_bytes(),
-        ExtractorOptions {
-            preserve_spaces_in_arbitrary: loose,
-        },
-    )
-    .into_iter()
-    .map(|s| unsafe { std::str::from_utf8_unchecked(s) })
-    .collect()
+// See tailwindcss-oxide/src/main.rs 
+fn run(input: &str) -> Vec<&str> {
+    Extractor::new(input.as_bytes())
+        .extract()
+        .into_iter()
+        .map(|x| match x {
+            Extracted::Candidate(bytes) => unsafe { std::str::from_utf8_unchecked(bytes) },
+            Extracted::CssVariable(bytes) => unsafe { std::str::from_utf8_unchecked(bytes) },
+        })
+        .collect::<Vec<_>>()
 }
 
 // WASM-compatible function for JavaScript
 #[wasm_bindgen]
-pub fn find_tw_candidates(input: &str, loose: bool) -> Vec<JsValue> {
-    run(input, loose).into_iter().map(JsValue::from).collect()
+pub fn find_tw_candidates(input: &str) -> Vec<JsValue> {
+    run(input).into_iter().map(JsValue::from).collect()
 }
 
 // PHP FFI-compatible function
 #[no_mangle]
-pub extern "C" fn find_tw_candidates_ffi(input: *const u8, input_len: usize, loose: bool) -> *mut *mut u8 {
+pub extern "C" fn find_tw_candidates_ffi(
+    input: *const u8,
+    input_len: usize,
+) -> *mut *mut u8 {
     let input = unsafe { std::slice::from_raw_parts(input, input_len) };
     let input_str = unsafe { std::str::from_utf8_unchecked(input) };
-    
-    let results = run(input_str, loose);
+
+    let results = run(input_str);
 
     // Create a vector of C-style strings (null-terminated)
     let mut c_strings: Vec<*mut u8> = results
