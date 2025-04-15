@@ -14,6 +14,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ORG_DEV_PAT }}
+
+      # selecting a toolchain either by action or manual `rustup` calls should happen
+      # before the plugin, as the cache uses the current rustc version as its cache key
+      - run: rustup toolchain install stable --profile minimal
+
+      - name: Setup Cache
+        uses: Swatinem/rust-cache@v2
 
       - name: install cargo-bump
         run: cargo install cargo-bump
