@@ -1,9 +1,10 @@
 name: Publish to Packagist
 
 on:
+  workflow_dispatch:
   push:
     tags:
-      - '*'
+      - "*"
 
 env:
   # The project name specified in your Cargo.toml
@@ -48,7 +49,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p php/ext/
-          
+
           BIN_NAME=""
           if [[ "${{ matrix.runner }}" == "windows-latest" ]]; then
             BIN_NAME="${PROJECT_NAME}.dll"
@@ -68,8 +69,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.name }}
-          path:
-            php/ext/
+          path: php/ext/
 
   publish:
     runs-on: ubuntu-latest
