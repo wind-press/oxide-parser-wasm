@@ -35,6 +35,9 @@ jobs:
       - name: install cargo-get
         run: cargo install cargo-get
 
+      - name: update dependencies
+        run: cargo update
+
       - name: commit changes
         run: |
           git config --global user.name 'windpress'
