@@ -19,12 +19,13 @@ checksum = "7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50"
 
 [[package]]
 name = "bexpand"
-version = "1.2.2"
+version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "60f2ee5912aaac7415458e18a0258e31405c800456e02249d5167b2c6d6d0374"
+checksum = "e1ce63d50fc72e4a9e5af8124f6abec44ce8515de0d51eac0179b71f3ef91411"
 dependencies = [
  "itertools",
  "nom",
+ "nom-language",
 ]
 
 [[package]]
@@ -59,7 +60,7 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "classification-macros"
 version = "0.1.0"
-source = "git+https://github.com/tailwindlabs/tailwindcss.git#ba103799f7fe0c3df427a095d6e7cfa6a8624791"
+source = "git+https://github.com/tailwindlabs/tailwindcss.git#dd5ec4960662299fcecd4852e9bd8fe26cad07a7"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -186,7 +187,7 @@ dependencies = [
 [[package]]
 name = "ignore"
 version = "0.4.23"
-source = "git+https://github.com/tailwindlabs/tailwindcss.git#ba103799f7fe0c3df427a095d6e7cfa6a8624791"
+source = "git+https://github.com/tailwindlabs/tailwindcss.git#dd5ec4960662299fcecd4852e9bd8fe26cad07a7"
 dependencies = [
  "crossbeam-deque",
  "dunce",
@@ -201,9 +202,9 @@ dependencies = [
 
 [[package]]
 name = "itertools"
-version = "0.11.0"
+version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1c173a5686ce8bfa551b3563d0c2170bf24ca44da99c7ca4bfdab5418c3fe57"
+checksum = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
 dependencies = [
  "either",
 ]
@@ -236,19 +237,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
 
 [[package]]
-name = "minimal-lexical"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
-
-[[package]]
 name = "nom"
-version = "7.1.3"
+version = "8.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d273983c5a657a70a3e8f2a01329822f3b8c8172b73826411a55751e404a0a4a"
+checksum = "df9761775871bdef83bee530e60050f7e54b1105350d6884eb0fb4f46c2f9405"
 dependencies = [
  "memchr",
- "minimal-lexical",
+]
+
+[[package]]
+name = "nom-language"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2de2bc5b451bfedaef92c90b8939a8fff5770bdcc1fafd6239d086aab8fa6b29"
+dependencies = [
+ "nom",
 ]
 
 [[package]]
@@ -275,7 +278,7 @@ checksum = "b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39"
 
 [[package]]
 name = "oxide-parser-wasm"
-version = "1.0.31"
+version = "1.0.32"
 dependencies = [
  "tailwindcss-oxide",
  "wasm-bindgen",
@@ -439,7 +442,7 @@ dependencies = [
 [[package]]
 name = "tailwindcss-oxide"
 version = "0.1.0"
-source = "git+https://github.com/tailwindlabs/tailwindcss.git#ba103799f7fe0c3df427a095d6e7cfa6a8624791"
+source = "git+https://github.com/tailwindlabs/tailwindcss.git#dd5ec4960662299fcecd4852e9bd8fe26cad07a7"
 dependencies = [
  "bexpand",
  "bstr",
