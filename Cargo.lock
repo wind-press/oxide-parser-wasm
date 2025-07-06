@@ -60,7 +60,7 @@ checksum = "9555578bc9e57714c812a1f84e4fc5b4d21fcb063490c624de019f7464c91268"
 [[package]]
 name = "classification-macros"
 version = "0.1.0"
-source = "git+https://github.com/tailwindlabs/tailwindcss.git#2030e942bc3b78a31767cee327a0cb5549fdb985"
+source = "git+https://github.com/tailwindlabs/tailwindcss.git#2941a7b5c2979525a6e1b29b83bf7a455531abc5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -187,7 +187,7 @@ dependencies = [
 [[package]]
 name = "ignore"
 version = "0.4.23"
-source = "git+https://github.com/tailwindlabs/tailwindcss.git#2030e942bc3b78a31767cee327a0cb5549fdb985"
+source = "git+https://github.com/tailwindlabs/tailwindcss.git#2941a7b5c2979525a6e1b29b83bf7a455531abc5"
 dependencies = [
  "crossbeam-deque",
  "dunce",
@@ -278,7 +278,7 @@ checksum = "b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39"
 
 [[package]]
 name = "oxide-parser-wasm"
-version = "1.0.40"
+version = "1.0.41"
 dependencies = [
  "tailwindcss-oxide",
  "wasm-bindgen",
@@ -442,7 +442,7 @@ dependencies = [
 [[package]]
 name = "tailwindcss-oxide"
 version = "0.1.0"
-source = "git+https://github.com/tailwindlabs/tailwindcss.git#2030e942bc3b78a31767cee327a0cb5549fdb985"
+source = "git+https://github.com/tailwindlabs/tailwindcss.git#2941a7b5c2979525a6e1b29b83bf7a455531abc5"
 dependencies = [
  "bexpand",
  "bstr",
