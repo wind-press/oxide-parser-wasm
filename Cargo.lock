@@ -60,7 +60,7 @@ checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
 [[package]]
 name = "classification-macros"
 version = "0.1.0"
-source = "git+https://github.com/tailwindlabs/tailwindcss.git#4363426384d98c3545491738b26afd6a0c03e22c"
+source = "git+https://github.com/tailwindlabs/tailwindcss.git#21f2bf99b9764929b5268ce2174840086ef191cc"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -140,7 +140,7 @@ dependencies = [
 [[package]]
 name = "ignore"
 version = "0.4.24"
-source = "git+https://github.com/tailwindlabs/tailwindcss.git#4363426384d98c3545491738b26afd6a0c03e22c"
+source = "git+https://github.com/tailwindlabs/tailwindcss.git#21f2bf99b9764929b5268ce2174840086ef191cc"
 dependencies = [
  "crossbeam-deque",
  "dunce",
@@ -240,7 +240,7 @@ checksum = "42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d"
 
 [[package]]
 name = "oxide-parser-wasm"
-version = "1.0.58"
+version = "1.0.59"
 dependencies = [
  "tailwindcss-oxide",
  "wasm-bindgen",
@@ -386,9 +386,9 @@ checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
 
 [[package]]
 name = "syn"
-version = "2.0.109"
+version = "2.0.110"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f17c7e013e88258aa9543dcbe81aca68a667a9ac37cd69c9fbc07858bfe0e2f"
+checksum = "a99801b5bd34ede4cf3fc688c5919368fea4e4814a4664359503e6015b280aea"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -398,7 +398,7 @@ dependencies = [
 [[package]]
 name = "tailwindcss-oxide"
 version = "0.1.0"
-source = "git+https://github.com/tailwindlabs/tailwindcss.git#4363426384d98c3545491738b26afd6a0c03e22c"
+source = "git+https://github.com/tailwindlabs/tailwindcss.git#21f2bf99b9764929b5268ce2174840086ef191cc"
 dependencies = [
  "bexpand",
  "bstr",
