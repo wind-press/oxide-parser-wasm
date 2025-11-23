@@ -1,0 +1,23 @@
+# Ignore source files and build artifacts that shouldn't be published
+/target
+/src
+.DS_Store
+node_modules/
+dist/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+Cargo.lock
+Cargo.toml
+
+# Ignore example and test files
+# *.html
+# *.md
+# !README.md
+# !LICENSE
+
+# Ignore GitHub workflows
+.github/
+
+# Keep pkg directory contents (override pkg/.gitignore)
+!pkg/**
