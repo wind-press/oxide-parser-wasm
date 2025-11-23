@@ -1,6 +1,6 @@
 {
   "name": "@windpress/oxide-parser-wasm",
-  "version": "1.0.63",
+  "version": "1.0.64",
   "description": "tailwindcss-oxide parser wasm - browser and node compatible",
   "author": "WindPress <hi@wind.press>",
   "license": "MIT",

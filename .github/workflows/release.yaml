@@ -38,6 +38,11 @@ jobs:
       - name: update dependencies
         run: cargo update
 
+      - name: Update package.json version
+        run: |
+          VERSION=$(cargo get package.version)
+          sed -i 's/"version": "[^"]*"/"version": "'"$VERSION"'"/' package.json
+
       - name: commit changes
         run: |
           git config --global user.name 'windpress'
