@@ -1,0 +1,41 @@
+{
+  "name": "@windpress/oxide-parser-wasm",
+  "version": "1.0.63",
+  "description": "tailwindcss-oxide parser wasm - browser and node compatible",
+  "author": "WindPress <hi@wind.press>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wind-press/oxide-parser-wasm"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "cdn": "./pkg/oxide_parser_wasm.js",
+  "unpkg": "./pkg/oxide_parser_wasm.js",
+  "jsdelivr": "./pkg/oxide_parser_wasm.js",
+  "main": "./pkg/oxide_parser_wasm.js",
+  "module": "./pkg/oxide_parser_wasm.js",
+  "types": "./pkg/oxide_parser_wasm.d.ts",
+  "exports": {
+    ".": {
+      "types": "./pkg/oxide_parser_wasm.d.ts",
+      "cdn": "./pkg/oxide_parser_wasm.js",
+      "unpkg": "./pkg/oxide_parser_wasm.js",
+      "jsdelivr": "./pkg/oxide_parser_wasm.js",
+      "importmap": "./pkg/oxide_parser_wasm.js",
+      "browser": "./pkg/oxide_parser_wasm.js",
+      "node": "./pkg/oxide_parser_wasm.js",
+      "default": "./pkg/oxide_parser_wasm.js"
+    },
+    "./pkg/oxide_parser_wasm_bg.wasm": "./pkg/oxide_parser_wasm_bg.wasm"
+  },
+  "files": [
+    "pkg",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "wasm-pack build --scope=windpress --release",
+    "prepublishOnly": "npm run build"
+  }
+}

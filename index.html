@@ -5,6 +5,18 @@
     <title>oxide-parser-wasm example</title>
   </head>
   <body>
+    <h1>Oxide Parser WASM - Examples</h1>
+    
+    <h2>Example 1: Local Build (requires build first)</h2>
+    <div id="output1"></div>
+    
+    <h2>Example 2: CDN Usage (esm.sh)</h2>
+    <div id="output2"></div>
+    
+    <h2>Example 3: CDN Usage (jsdelivr)</h2>
+    <div id="output3"></div>
+
+    <!-- Example 1: Local build -->
     <script type="module">
       import init, { find_tw_candidates } from "./pkg/oxide_parser_wasm.js";
       init().then(() => {
@@ -71,8 +83,76 @@
             </div>
         `);
 
-        console.log(candidates);
+        document.getElementById('output1').innerHTML = `
+          <pre>Found ${candidates.length} candidates (local build)</pre>
+          <pre>${JSON.stringify(candidates.slice(0, 10), null, 2)}</pre>
+        `;
+        console.log('Example 1 (local):', candidates);
       });
     </script>
+
+    <!-- Example 2: CDN via esm.sh -->
+    <script type="module">
+      import init, { find_tw_candidates } from "https://esm.sh/@windpress/oxide-parser-wasm";
+      
+      init().then(() => {
+        const candidates = find_tw_candidates(/** html */`
+          <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
+            <img src="/img/beams.jpg" alt="" class="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2" width="1308" />
+          </div>
+        `);
+        
+        document.getElementById('output2').innerHTML = `
+          <pre>Found ${candidates.length} candidates (esm.sh CDN)</pre>
+          <pre>${JSON.stringify(candidates.slice(0, 10), null, 2)}</pre>
+        `;
+        console.log('Example 2 (esm.sh):', candidates);
+      }).catch(err => {
+        document.getElementById('output2').innerHTML = `<pre style="color: red">Error: ${err.message}</pre>`;
+      });
+    </script>
+
+    <!-- Example 3: CDN via jsdelivr -->
+    <script type="module">
+      import init, { find_tw_candidates } from "https://cdn.jsdelivr.net/npm/@windpress/oxide-parser-wasm";
+      
+      init().then(() => {
+        const candidates = find_tw_candidates(/** html */`
+          <div class="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
+            <img src="/img/beams.jpg" alt="" class="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2" width="1308" />
+          </div>
+        `);
+        
+        document.getElementById('output3').innerHTML = `
+          <pre>Found ${candidates.length} candidates (jsdelivr CDN)</pre>
+          <pre>${JSON.stringify(candidates.slice(0, 10), null, 2)}</pre>
+        `;
+        console.log('Example 3 (jsdelivr):', candidates);
+      }).catch(err => {
+        document.getElementById('output3').innerHTML = `<pre style="color: red">Error: ${err.message}</pre>`;
+      });
+    </script>
+
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      h1 {
+        color: #333;
+      }
+      h2 {
+        color: #666;
+        margin-top: 2rem;
+      }
+      pre {
+        background: #f4f4f4;
+        padding: 1rem;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+    </style>
   </body>
 </html>

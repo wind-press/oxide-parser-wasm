@@ -2,3 +2,9 @@
 
 # OS specific files
 .DS_Store
+# Node.js / Build artifacts
+node_modules/
+dist/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

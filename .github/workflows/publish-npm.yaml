@@ -28,9 +28,6 @@ jobs:
 
       - name: install wasm-pack
         run: cargo install wasm-pack
-
-      - name: Building the package
-        run: wasm-pack build --scope="windpress" --release
       
       - uses: actions/setup-node@v4
         with:
@@ -42,14 +39,17 @@ jobs:
       - name: Update npm
         run: npm install -g npm@latest
 
-      - run: npm pkg fix
-        working-directory: pkg
+      # Build WASM only (no bundling needed - wasm-pack output is CDN-ready)
+      - name: Building the package
+        run: npm run build
 
+      # Fix package.json formatting (optional)
+      - name: Fix package.json
+        run: npm pkg fix
+
+      # Publish from root (includes pkg/ directory with single WASM file)
       - name: Publish package to npm
         run: npm publish --provenance --access public
-        working-directory: pkg
-        # env:
-        #   NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
       # - name: Publish package to pkg.pr.new
       #   run: npx pkg-pr-new publish
