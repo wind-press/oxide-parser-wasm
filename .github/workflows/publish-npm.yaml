@@ -7,6 +7,10 @@ on:
     tags:
       - "*"
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,8 +43,8 @@ jobs:
       - name: Publish package to npm
         run: npm publish
         working-directory: pkg
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+        # env:
+        #   NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
       # - name: Publish package to pkg.pr.new
       #   run: npx pkg-pr-new publish
