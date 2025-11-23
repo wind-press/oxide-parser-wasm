@@ -1,0 +1,2 @@
+# Don't ignore anything in pkg/ for npm publish
+# This overrides the .gitignore file in this directory
