@@ -36,6 +36,7 @@ jobs:
         with:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
+          scope: '@windpress'
 
       # Ensure npm 11.5.1 or later is installed
       - name: Update npm
@@ -45,7 +46,7 @@ jobs:
         working-directory: pkg
 
       - name: Publish package to npm
-        run: npm publish
+        run: npm publish --provenance --access public
         working-directory: pkg
         # env:
         #   NODE_AUTH_TOKEN: ${{secrets.npm_token}}
