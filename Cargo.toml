@@ -1,6 +1,6 @@
 [package]
 name = "oxide-parser-wasm"
-version = "1.0.61"
+version = "1.0.62"
 edition = "2021"
 authors = ["WindPress <hi@wind.press>"]
 description = "tailwindcss-oxide parser wasm"
